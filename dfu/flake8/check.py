@@ -1,9 +1,10 @@
 from dfu.flake8.lib import BaseASTCheck, BaseChecker
+from dfu import VERSION
 
 
 class DFUChecker(BaseChecker):
     name = 'dfu'
-    version = '1.0.0'
+    version = VERSION
 
 
 class DangerousImportCheck(BaseASTCheck):
