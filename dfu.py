@@ -8,9 +8,6 @@ except:
 
 
 class DFUChecker(BaseChecker):
-    """
-    Checks for strings that aren't wrapped in a _ call somewhere
-    """
 
     __implements__ = IAstroidChecker
 
