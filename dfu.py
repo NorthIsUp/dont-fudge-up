@@ -2,7 +2,7 @@ from pylint.checkers import BaseChecker
 
 try:
     from pylint.interfaces import IAstroidChecker
-except:
+except ImportError:
     # fallback to older pylint naming
     from pylint.interfaces import IASTNGChecker as IAstroidChecker
 
