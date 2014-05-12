@@ -1,4 +1,10 @@
-Py-DFU-Linter
+pylint-dfu
 =============
 
-Don't fudge up production with extra prints, import debug, or pdb.set_trace 
+Don't Fudge Up production with extra prints, import debug, or an erroneous pdb.set_trace.
+
+it should work something like this
+
+```bash
+$ pylint --reports=n --load-plugins=dfu tests/input.py
+```
