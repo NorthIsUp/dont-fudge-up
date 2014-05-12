@@ -14,7 +14,7 @@ with open('README.rst') as f:
 
 setup(
     name='dont-fudge-up',
-    version='0.0.2',
+    version='0.0.3',
     author='Adam Hitchcock',
     author_email='adam@disqus.com',
     url='https://github.com/NorthIsUp/dont-fudge-up',
@@ -22,7 +22,7 @@ setup(
     license='BSD',
     entry_points={
         'flake8.extension': [
-            'D4 = dfu.flake8.check:DFUChecker',
+            'D = dfu.flake8.check:DFUChecker',
         ],
     },
     long_description=long_description,

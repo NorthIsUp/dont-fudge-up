@@ -10,4 +10,3 @@ print "hi"
 printfn = lambda x: x
 
 print printfn('hi')
-

@@ -3,21 +3,34 @@ from dfu import VERSION
 
 
 class DFUChecker(BaseChecker):
-    name = 'dfu'
+    name = 'dont-fudge-up'
     version = VERSION
 
 
-class DangerousImportCheck(BaseASTCheck):
+class DFUASTCheck(BaseASTCheck):
+    #: D0xx is stylistically bad for production
+    D001 = 'WHY U LEAVE A PRINT?'
+
+    #: D1xx are cautioned items for production
+    D101 = 'Cautioned import for production'
+    D102 = 'set_trace may be fatal in production (set_trace might be from pdb)'
+
+    #: D5xx are forbidden items for production
+    D501 = 'Forbidden import for production'
+    D502 = 'pdb.set_trace is forbidden in production'
+
+
+class DangerousImportCheck(DFUASTCheck):
     """
     Checks for potentially dangerous imports
     """
 
-    D421 = 'Forbidden import for production'
-    D422 = 'Cautioned import for production'
+    cautioned_import = 'D101'
+    forbidden_import = 'D501'
 
     watched_imports = {
-        'debug': 'D421',
-        'pdb': 'D422',
+        'debug': forbidden_import,
+        'pdb': cautioned_import,
     }
 
     def visit_import(self, node, parents):
@@ -28,21 +41,19 @@ class DangerousImportCheck(BaseASTCheck):
             yield self.err(node, watched_imports[name])
 
 
-class PrintCheck(BaseASTCheck):
+class PrintCheck(DFUASTCheck):
     """
     Checks for potentially dangerous imports
     """
 
-    D423 = 'WHY U LEAVE A PRINT?'
-
     def visit_print(self, node, parents):
-        yield self.err(node, 'D423')
+        yield self.err(node, 'D001')
 
 
-class DebuggerCheck(BaseASTCheck):
+class DebuggerCheck(DFUASTCheck):
 
-    D424 = 'pdb.set_trace is fatal in production'
-    D425 = 'set_trace may be fatal in production (set_trace may be be from pdb)'
+    cautioned_set_trace = 'D102'
+    forbidden_set_trace = 'D502'
 
     def visit_call(self, node, parrents):
         func_name = getattr(node.func, 'attr', None) or getattr(node.func, 'id', None)
@@ -50,6 +61,6 @@ class DebuggerCheck(BaseASTCheck):
 
         if func_name == 'set_trace':
             if func_module and func_module.id in ('pdb', 'ipdb', 'bpdb'):
-                yield self.err(node, 'D424')
+                yield self.err(node, self.forbidden_set_trace)
             else:
-                yield self.err(node, 'D424')
+                yield self.err(node, self.cautioned_set_trace)
