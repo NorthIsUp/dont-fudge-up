@@ -4,8 +4,8 @@ Don't Fudge Up
 
 Don't Fudge Up production with extra prints, import debug, or an erroneous pdb.set_trace.
 
-Instalation
------------
+Installation
+------------
 such pip so wow::
 
     $ pip install dont-fudge-up
