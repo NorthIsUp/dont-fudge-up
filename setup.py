@@ -14,10 +14,11 @@ with open('README.rst') as f:
 
 setup(
     name='dont-fudge-up',
-    version='0.0.3',
+    version='0.0.4',
     author='Adam Hitchcock',
     author_email='adam@disqus.com',
     url='https://github.com/NorthIsUp/dont-fudge-up',
+    bugtrack_url='https://github.com/NorthIsUp/dont-fudge-up/issues',
     description='Find operations that might fudge up production, like a pdb.set_trace',
     license='BSD',
     entry_points={

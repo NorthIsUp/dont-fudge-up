@@ -1,23 +1,14 @@
 from dfu.flake8.lib import BaseASTCheck, BaseChecker
 from dfu import VERSION
+from dfu import messages
 
 
 class DFUChecker(BaseChecker):
     name = 'dont-fudge-up'
     version = VERSION
 
-
-class DFUASTCheck(BaseASTCheck):
-    #: D0xx is stylistically bad for production
-    D001 = 'WHY U LEAVE A PRINT?'
-
-    #: D1xx are cautioned items for production
-    D101 = 'Cautioned import for production'
-    D102 = 'set_trace may be fatal in production (set_trace might be from pdb)'
-
-    #: D5xx are forbidden items for production
-    D501 = 'Forbidden import for production'
-    D502 = 'pdb.set_trace is forbidden in production'
+#: create a base class that has all of the error codes in it
+DFUASTCheck = type('DFUASTCheck', (BaseASTCheck, ), messages.get_flake8_messages())
 
 
 class DangerousImportCheck(DFUASTCheck):
@@ -25,12 +16,9 @@ class DangerousImportCheck(DFUASTCheck):
     Checks for potentially dangerous imports
     """
 
-    cautioned_import = 'D101'
-    forbidden_import = 'D501'
-
     watched_imports = {
-        'debug': forbidden_import,
-        'pdb': cautioned_import,
+        'debug': messages.forbidden_import,
+        'pdb': messages.cautioned_import,
     }
 
     def visit_import(self, node, parents):
@@ -52,15 +40,12 @@ class PrintCheck(DFUASTCheck):
 
 class DebuggerCheck(DFUASTCheck):
 
-    cautioned_set_trace = 'D102'
-    forbidden_set_trace = 'D502'
-
     def visit_call(self, node, parrents):
         func_name = getattr(node.func, 'attr', None) or getattr(node.func, 'id', None)
         func_module = getattr(node.func, 'value', None)
 
         if func_name == 'set_trace':
             if func_module and func_module.id in ('pdb', 'ipdb', 'bpdb'):
-                yield self.err(node, self.forbidden_set_trace)
+                yield self.err(node, messages.forbidden_set_trace)
             else:
-                yield self.err(node, self.cautioned_set_trace)
+                yield self.err(node, messages.cautioned_set_trace)
