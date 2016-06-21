@@ -1,3 +1,4 @@
+from __future__ import print_function
 from dfu.flake8.lib import BaseASTCheck, BaseChecker
 from dfu import VERSION
 from dfu import messages
@@ -33,6 +34,11 @@ class PrintCheck(DFUASTCheck):
     """
     Checks for potentially dangerous imports
     """
+
+    def visit_call(self, node, parents):
+        func_name = getattr(node.func, 'attr', None) or getattr(node.func, 'id', None)
+        if func_name == 'print':
+            yield self.err(node, 'D001')
 
     def visit_print(self, node, parents):
         yield self.err(node, 'D001')

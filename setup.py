@@ -14,7 +14,7 @@ with open('README.rst') as f:
 
 setup(
     name='dont-fudge-up',
-    version='0.0.5',
+    version='0.0.6',
     author='Adam Hitchcock',
     author_email='adam@disqus.com',
     url='https://github.com/NorthIsUp/dont-fudge-up',

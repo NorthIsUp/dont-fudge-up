@@ -30,6 +30,7 @@ else:
 
 
 class _ASTCheckMeta(type):
+
     def __init__(self, class_name, bases, namespace):
         try:
             self._checks.append(self())
