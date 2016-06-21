@@ -14,7 +14,7 @@ with open('README.rst') as f:
 
 setup(
     name='dont-fudge-up',
-    version='0.0.4',
+    version='0.0.5',
     author='Adam Hitchcock',
     author_email='adam@disqus.com',
     url='https://github.com/NorthIsUp/dont-fudge-up',
@@ -42,5 +42,6 @@ setup(
         "Programming Language :: Python",
         "Programming Language :: Python :: 2",
         "Programming Language :: Python :: 2.7",
+        "Programming Language :: Python :: 3",
     ],
 )

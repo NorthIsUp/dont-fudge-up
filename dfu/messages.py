@@ -2,7 +2,7 @@ from dfu import Msg
 
 #: 0xx is stylistically bad for production
 cautioned_print = Msg(
-    id=001,
+    id=1,
     symbol='warn-print',
     description='WHY U LEAVE A PRINT?',
     pylint_type='W'
@@ -41,7 +41,7 @@ forbidden_set_trace = Msg(
 
 def _get_messages_dict(func, start=''):
     all_messages = dict((msg, getattr(msg, func)()) for msg in globals().values() if isinstance(msg, Msg))
-    return dict((k, v) for k, v in all_messages.iteritems() if str(k).startswith(start))
+    return dict((k, v) for k, v in all_messages.items() if str(k).startswith(start))
 
 
 def get_flake8_messages(start=''):
