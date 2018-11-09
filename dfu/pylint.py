@@ -22,7 +22,6 @@ class BaseDfuChecker(BaseChecker):
 
 class DfuPrintChecker(BaseDfuChecker):
     msgs = messages.get_pylint_messages(start='W40')
-    print msgs
 
     def visit_print(self, node):
         self.add_message('warn-print', node=node)
